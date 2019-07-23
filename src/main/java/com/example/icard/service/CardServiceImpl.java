@@ -4,15 +4,15 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.example.icard.model.Card;
 import com.example.icard.model.dto.CardEmissionDTO;
 import com.example.icard.model.dto.SuccessResponseDTO;
-import com.example.icard.model.dto.TransationAuthorizationDTO;
+import com.example.icard.model.dto.TransactionAuthorizationDTO;
 import com.example.icard.repository.CardRepository;
 import com.example.icard.service.execption.BusinessException;
 import com.example.icard.utils.CreditCardUtils;
@@ -21,11 +21,15 @@ import com.example.icard.utils.DateValidtUtils;
 @Service
 public class CardServiceImpl implements CardService {
 	
-	@Autowired
 	private CardRepository cardRepository;
 	
+	public CardServiceImpl(CardRepository cardRepository) {
+		this.cardRepository = cardRepository;
+	}
+
 	@Transactional
 	public CardEmissionDTO save(CardEmissionDTO cardEmissionDTO) {
+		verifyFieldsRequired(cardEmissionDTO);
 		cardEmissionDTO.setCardNumber(CreditCardUtils.generateNumberCreditCard());
 		cardEmissionDTO.setExpirantionDate(DateValidtUtils.generate(LocalDate.now()));
 		cardEmissionDTO.setCvv(CreditCardUtils.generateCvv(cardEmissionDTO.getCardNumber(), cardEmissionDTO.getExpirantionDate()));
@@ -37,47 +41,63 @@ public class CardServiceImpl implements CardService {
 		return cardEmissionDTO;
 	}
 
-	public SuccessResponseDTO authorizeTransaction(TransationAuthorizationDTO transationAuthorizationDTO) {
-		Optional<Card> optionalCard = cardRepository.findByCardNumber(transationAuthorizationDTO.getCardNumber());
+	public SuccessResponseDTO authorizeTransaction(TransactionAuthorizationDTO transactionAuthorizationDTO) {
+		verifyFieldsRequiredAuthorizationTransaction(transactionAuthorizationDTO);
+		
+		Optional<Card> optionalCard = cardRepository.findByCardNumber(transactionAuthorizationDTO.getCardNumber());
 		
 		if(!optionalCard.isPresent()) throw new BusinessException("Transaction not authorized. Card invalid.", "101");
 		
 		Card card = optionalCard.get();
 		
-		validateIfCardNotExpirate(transationAuthorizationDTO);
-		validateIfCvvIsValid(transationAuthorizationDTO);
-		validatePassword(transationAuthorizationDTO, card);
-		validateBalance(transationAuthorizationDTO, card);
+		validateIfCardNotExpirate(transactionAuthorizationDTO);
+		validateIfCvvIsValid(transactionAuthorizationDTO);
+		validatePassword(transactionAuthorizationDTO, card);
+		validateBalance(transactionAuthorizationDTO, card);
 		
-		setNewBalance(transationAuthorizationDTO, card);
+		setNewBalance(transactionAuthorizationDTO, card);
 		
 		return new SuccessResponseDTO("00", card.getBalance());
 	}
 
-	private void setNewBalance(TransationAuthorizationDTO transationAuthorizationDTO, Card card) {
-		BigDecimal newBalance = card.getBalance().subtract(transationAuthorizationDTO.getSaleValue());
+	private void verifyFieldsRequiredAuthorizationTransaction(TransactionAuthorizationDTO transactionAuthorizationDTO) {
+		if(StringUtils.isEmpty(transactionAuthorizationDTO.getCardNumber())) throw new BusinessException("Field 'cartao' is required", "400");
+		if(StringUtils.isEmpty(transactionAuthorizationDTO.getClient())) throw new BusinessException("Field 'estabelecimento' is required", "400");
+		if(StringUtils.isEmpty(transactionAuthorizationDTO.getCvv())) throw new BusinessException("Field 'CVV' is required", "400");
+		if(StringUtils.isEmpty(transactionAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Field 'validade' is required", "400");
+		if(StringUtils.isEmpty(transactionAuthorizationDTO.getPassword())) throw new BusinessException("Field 'senha' is required", "400");
+		if(transactionAuthorizationDTO.getSaleValue() == null) throw new BusinessException("Field 'valor' is required", "400");
+	}
+
+	private void setNewBalance(TransactionAuthorizationDTO transactionAuthorizationDTO, Card card) {
+		BigDecimal newBalance = card.getBalance().subtract(transactionAuthorizationDTO.getSaleValue());
 		card.setBalance(newBalance);
 		cardRepository.save(card);
 	}
 
-	private void validateIfCardNotExpirate(TransationAuthorizationDTO transationAuthorizationDTO) {
-		if(DateValidtUtils.cardExpired(transationAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Transaction not authorized. Card expired.", "102");
+	private void validateIfCardNotExpirate(TransactionAuthorizationDTO transactionAuthorizationDTO) {
+		if(DateValidtUtils.cardExpired(transactionAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Transaction not authorized. Card expired.", "102");
 	}
 	
-	private void validateIfCvvIsValid(TransationAuthorizationDTO transationAuthorizationDTO) {
-		String cvvReceived = transationAuthorizationDTO.getCvv();
-		String cvvGenerated = CreditCardUtils.generateCvv(transationAuthorizationDTO.getCardNumber(), transationAuthorizationDTO.getExpirantionDate());
+	private void validateIfCvvIsValid(TransactionAuthorizationDTO transactionAuthorizationDTO) {
+		String cvvReceived = transactionAuthorizationDTO.getCvv();
+		String cvvGenerated = CreditCardUtils.generateCvv(transactionAuthorizationDTO.getCardNumber(), transactionAuthorizationDTO.getExpirantionDate());
 		if(!cvvReceived.equals(cvvGenerated)) throw new BusinessException("Transaction not authorized. CVV invalid.", "103");
 	}
 	
-	private void validatePassword(TransationAuthorizationDTO transationAuthorizationDTO, Card card) {
+	private void validatePassword(TransactionAuthorizationDTO transactionAuthorizationDTO, Card card) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		Boolean passwordIsValid = passwordEncoder.matches(transationAuthorizationDTO.getPassword(), card.getPassword());
+		Boolean passwordIsValid = passwordEncoder.matches(transactionAuthorizationDTO.getPassword(), card.getPassword());
 		if(!passwordIsValid) throw new BusinessException("Transaction not authorized. Password invalid.", "104"); 
 	}
 	
-	private void validateBalance(TransationAuthorizationDTO transationAuthorizationDTO, Card card) {
-		if(transationAuthorizationDTO.getSaleValue().compareTo(card.getBalance()) > 0)
+	private void validateBalance(TransactionAuthorizationDTO transactionAuthorizationDTO, Card card) {
+		if(transactionAuthorizationDTO.getSaleValue().compareTo(card.getBalance()) > 0)
 			throw new BusinessException("Transaction not authorized. Balance insuficient.", "105"); 
+	}
+	
+	private void verifyFieldsRequired(CardEmissionDTO cardEmissionDTO) {
+		if(StringUtils.isEmpty(cardEmissionDTO.getName())) throw new BusinessException("Field 'nome' is required", "400");
+		if(StringUtils.isEmpty(cardEmissionDTO.getBalance())) throw new BusinessException("Field 'saldo' is required", "400");
 	}
 }

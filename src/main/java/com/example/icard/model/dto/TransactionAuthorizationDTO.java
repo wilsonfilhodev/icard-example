@@ -2,38 +2,43 @@ package com.example.icard.model.dto;
 
 import java.math.BigDecimal;
 
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(Include.NON_NULL)
-public class TransationAuthorizationDTO {
+public class TransactionAuthorizationDTO {
 
-	@NotNull(message = "Field 'cartao' is required")
 	@JsonProperty("cartao")
 	private String cardNumber;
 	
-	@NotNull(message = "Field 'validade' is required")
 	@JsonProperty("validade")
 	private String expirantionDate;
 	
-	@NotNull(message = "Field 'cvv' is required")
 	@JsonProperty("cvv")
 	private String cvv;
 	
-	@NotNull(message = "Field 'estabelecimento' is required")
 	@JsonProperty("estabelecimento")
 	private String client;
 	
-	@NotNull(message = "Field 'valor' is required")
 	@JsonProperty("valor")
 	private BigDecimal saleValue;
 	
-	@NotNull(message = "Field 'senha' is required")
 	@JsonProperty("senha")
 	private String password;
+
+	public TransactionAuthorizationDTO() {
+	}
+
+	public TransactionAuthorizationDTO(String cardNumber, String expirantionDate, String cvv, String client,
+			BigDecimal saleValue, String password) {
+		this.cardNumber = cardNumber;
+		this.expirantionDate = expirantionDate;
+		this.cvv = cvv;
+		this.client = client;
+		this.saleValue = saleValue;
+		this.password = password;
+	}
 
 	public String getCardNumber() {
 		return cardNumber;

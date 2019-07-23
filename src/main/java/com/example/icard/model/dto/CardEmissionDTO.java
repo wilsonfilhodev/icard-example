@@ -2,8 +2,6 @@ package com.example.icard.model.dto;
 
 import java.math.BigDecimal;
 
-import javax.validation.constraints.NotNull;
-
 import com.example.icard.model.Card;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -12,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(Include.NON_NULL)
 public class CardEmissionDTO {
 
-	@NotNull(message = "Field 'nome' is required")
 	@JsonProperty("nome")
 	private String name;
 
@@ -27,7 +24,6 @@ public class CardEmissionDTO {
 	@JsonProperty("senha")
 	private String password;
 
-	@NotNull(message = "Field 'saldo' is required")
 	@JsonProperty("saldo")
 	private BigDecimal balance;
 
