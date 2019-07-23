@@ -13,9 +13,9 @@ public class Card {
 
 	private String name;
 
-	private String number;
+	private String cardNumber;
 
-	private String dateValidt;
+	private String expirantionDate;
 
 	private String password;
 
@@ -37,20 +37,20 @@ public class Card {
 		this.name = name;
 	}
 
-	public String getNumber() {
-		return number;
+	public String getCardNumber() {
+		return cardNumber;
 	}
 
-	public void setNumber(String number) {
-		this.number = number;
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
 	}
 
-	public String getDateValidt() {
-		return dateValidt;
+	public String getExpirantionDate() {
+		return expirantionDate;
 	}
 
-	public void setDateValidt(String dateValidt) {
-		this.dateValidt = dateValidt;
+	public void setExpirantionDate(String expirantionDate) {
+		this.expirantionDate = expirantionDate;
 	}
 
 	public String getPassword() {
@@ -68,5 +68,5 @@ public class Card {
 	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
-	
+
 }

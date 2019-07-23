@@ -8,5 +8,5 @@ import com.example.icard.model.Card;
 
 public interface CardRepository extends MongoRepository<Card, String>  {
 
-	Optional<Card> findByNumber(String number);
+	Optional<Card> findByCardNumber(String cardNumber);
 }

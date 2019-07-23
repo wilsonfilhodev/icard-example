@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class ApiError {
 
 	private String code;
@@ -22,7 +26,17 @@ public class ApiError {
 		this.code = code;
 		this.timestamp = new Date();
 		this.message = message;
-		errors = Arrays.asList(error);
+		this.errors = Arrays.asList(error);
+	}
+
+	public ApiError(String code, String error) {
+		this.code = code;
+		this.errors = Arrays.asList(error);
+	}
+
+	public ApiError(String code, List<String> errors) {
+		this.code = code;
+		this.errors = errors;
 	}
 
 	public String getCode() {

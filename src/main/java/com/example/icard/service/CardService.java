@@ -1,11 +1,12 @@
 package com.example.icard.service;
 
 import com.example.icard.model.dto.CardEmissionDTO;
-import com.example.icard.service.execption.CardNotFoundException;
+import com.example.icard.model.dto.SuccessResponseDTO;
+import com.example.icard.model.dto.TransationAuthorizationDTO;
 
 public interface CardService {
 	
 	CardEmissionDTO save(CardEmissionDTO cardEmissionDTO);
 	
-	CardEmissionDTO findByNumber(String number) throws CardNotFoundException;
+	SuccessResponseDTO authorizeTransaction(TransationAuthorizationDTO transationAuthorizationDTO);
 }

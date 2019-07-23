@@ -17,12 +17,12 @@ public class CardEmissionDTO {
 	private String name;
 
 	@JsonProperty("numero")
-	private String number;
+	private String cardNumber;
 
 	private String cvv;
 
 	@JsonProperty("validade")
-	private String dateValidt;
+	private String expirantionDate;
 
 	@JsonProperty("senha")
 	private String password;
@@ -30,27 +30,26 @@ public class CardEmissionDTO {
 	@NotNull(message = "Field 'saldo' is required")
 	@JsonProperty("saldo")
 	private BigDecimal balance;
-	
-	
+
 	public CardEmissionDTO() {
 	}
 
 	public CardEmissionDTO(Card card) {
 		this.name = card.getName();
-		this.number = card.getNumber();
-		this.dateValidt = card.getDateValidt();
+		this.cardNumber = card.getCardNumber();
+		this.expirantionDate = card.getExpirantionDate();
 		this.password = card.getPassword();
 		this.balance = card.getBalance();
 	}
-	
+
 	public Card parseToCard() {
 		Card card = new Card();
 		card.setName(this.name);
-		card.setNumber(this.number);
-		card.setDateValidt(this.dateValidt);
+		card.setCardNumber(this.cardNumber);
+		card.setExpirantionDate(this.expirantionDate);
 		card.setPassword(this.password);
 		card.setBalance(this.balance);
-		
+
 		return card;
 	}
 
@@ -62,12 +61,12 @@ public class CardEmissionDTO {
 		this.name = name;
 	}
 
-	public String getNumber() {
-		return number;
+	public String getCardNumber() {
+		return cardNumber;
 	}
 
-	public void setNumber(String number) {
-		this.number = number;
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
 	}
 
 	public String getCvv() {
@@ -78,12 +77,12 @@ public class CardEmissionDTO {
 		this.cvv = cvv;
 	}
 
-	public String getDateValidt() {
-		return dateValidt;
+	public String getExpirantionDate() {
+		return expirantionDate;
 	}
 
-	public void setDateValidt(String dateValidt) {
-		this.dateValidt = dateValidt;
+	public void setExpirantionDate(String expirantionDate) {
+		this.expirantionDate = expirantionDate;
 	}
 
 	public String getPassword() {
