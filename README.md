@@ -38,7 +38,7 @@ Here is what this little application demonstrates:
 - Mapping Application Exceptions to Correct HTTP Response with Exception Details in Body
 - Automatic CRUD Functionality Using Standard Spring Mongo Repository
 - Demonstrates MockMVC test framework and Junit 
-- Api documented by Swagger2 using annotations
+- Documentation using Swagger2 annotations
 
 
 ## Quick start
