@@ -3,7 +3,7 @@
     <img src="https://spring.io/img/homepage/icon-spring-boot.svg" alt="Logo" width=72 height=72>
   </a>
 
-  <h3 align="center">API Rest iCARD - Spring Boot + MongoDB</h3>
+  <h3 align="center">API Rest iCARD</h3>
 
   <p align="center">
     This is a sample Java / Maven / Spring Boot (version 2.1.6) application that can be used for create credit cards and authorize purchases.
