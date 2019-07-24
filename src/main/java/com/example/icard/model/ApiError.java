@@ -5,14 +5,21 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
 public class ApiError {
 
+	@JsonProperty("codigo")
 	private String code;
+	
 	private Date timestamp;
+	
+	@JsonProperty("mensagem")
 	private String message;
+	
+	@JsonProperty("erros")
 	private List<String> errors;
 
 	public ApiError(String code, String message, List<String> errors) {
