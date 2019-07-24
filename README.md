@@ -6,7 +6,7 @@
   <h3 align="center">API Rest iCARD - Spring Boot + MongoDB</h3>
 
   <p align="center">
-    This example app shows how to build a basic api rest, using Spring Boot, which create credit cards and authorize purchases.
+    This is a sample Java / Maven / Spring Boot (version 2.1.6) application that can be used for create credit cards and authorize purchases.
   </p>
 </p>
 
@@ -15,15 +15,30 @@
 - [Overview](#overview)
 - [Quick start](#quick-start)
 - [What's included](#whats-included)
+- [Documentation](#documentation)
 - [Authors](#authors)
 - [License](#license)
 
 
 ## Overview
 
+
+The API is just a credit card creation and transaction authorization REST service. It uses an cloud database (MLAB) to store the data.
+
 This project was developed following the MVC model. By adopting this architectural model the maintenance and evolution of the application becomes easier. When applying this model correctly the developer intuitively brings to his application some design patterns.
 
 We adopted as Spring Boot framework that also already follows the MVC model, thus facilitating the development of api.
+
+This application is packaged as a war which has Tomcat 8 embedded. No Tomcat or JBoss installation is necessary. You run it using the java -jar command.
+
+Here is what this little application demonstrates:
+
+- Full integration with the latest Spring Framework: inversion of control, dependency injection, etc.
+- Writing a RESTful Service Using HTTP Annotation and Verbs
+- Mapping Application Exceptions to Correct HTTP Response with Exception Details in Body
+- Automatic CRUD Functionality Using Standard Spring Mongo Repository
+- Demonstrates MockMVC test framework and Junit 
+- Api documented by Swagger2 using annotations
 
 
 ## Quick start
@@ -111,6 +126,11 @@ You can point to a local database by changing the connection data in the `applic
 
 **Notes**
 > All attributes are required.
+
+
+## Documentation
+
+This project is documented with Swagger 2 API docs. Run the server and browse to `localhost:8080/swagger-ui.html`
 
 
 ## Authors
