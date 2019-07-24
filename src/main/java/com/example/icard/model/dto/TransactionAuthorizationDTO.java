@@ -4,9 +4,13 @@ import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import io.swagger.annotations.ApiModel;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(Include.NON_NULL)
+@ApiModel(description = "Class representing a transaction authorization.")
 public class TransactionAuthorizationDTO {
 
 	@JsonProperty("cartao")

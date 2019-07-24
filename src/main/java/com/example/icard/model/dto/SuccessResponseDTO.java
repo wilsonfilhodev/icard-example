@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description = "Class representing a success response for process of transaction authorization.")
 public class SuccessResponseDTO {
 
 	@JsonProperty("codigo")
