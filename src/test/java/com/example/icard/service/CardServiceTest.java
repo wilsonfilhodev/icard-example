@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -23,6 +25,8 @@ import com.example.icard.service.execption.BusinessException;
 @RunWith(SpringRunner.class)
 public class CardServiceTest {
 
+	Logger logger = LoggerFactory.getLogger(CardServiceTest.class);
+	
 	@MockBean
     private CardRepository cardRepository;
 	
@@ -35,6 +39,8 @@ public class CardServiceTest {
 	
 	@Before
 	public void setup() {
+		logger.info("SETUP TEST");
+		
 		transactionAuthorizationDTOMokc = new TransactionAuthorizationDTO(
 				"5555550434374908", "07/21", "301", "Empresa XYZ", new BigDecimal("1000"), "2684");
 		cardService = new CardServiceImpl(cardRepository);
@@ -42,6 +48,8 @@ public class CardServiceTest {
 	
 	@Test
 	public void givenCardWithoutName_whenSaveCard_thenReturnExcpetion() throws Exception {
+		logger.info("TEST SAVE CARD WHITHOUT NAME");
+		
 		thrown.expect(BusinessException.class);
 		thrown.expectMessage("Field 'nome' is required");
 		
@@ -54,6 +62,8 @@ public class CardServiceTest {
 	
 	@Test
 	public void testSaveCard() throws Exception {
+		logger.info("TEST SAVE CARD WITH SUCCESS");
+		
 		CardEmissionDTO dto = new CardEmissionDTO();
 		dto.setName("My Full Name");
 		dto.setBalance(BigDecimal.TEN);
@@ -69,6 +79,8 @@ public class CardServiceTest {
 	
 	@Test
 	public void givenCardWithoutCardNumber_whenAuthorizeTransaction_thenReturnExcpetion() throws Exception {
+		logger.info("TEST AUTHORIZE TRANSACTION WITHOUT CARD NUMBER");
+		
 		thrown.expect(BusinessException.class);
 		thrown.expectMessage("Field 'cartao' is required");
 		
@@ -79,6 +91,8 @@ public class CardServiceTest {
 	
 	@Test
 	public void givenCardWithValidateExpired_whenAuthorizeTransaction_thenReturnExcpetion() throws Exception {
+		logger.info("TEST AUTHORIZE TRANSACTION WITHOUT CARD EXPIRED");
+		
 		thrown.expect(BusinessException.class);
 		thrown.expectMessage("Transaction not authorized. Card expired.");
 		

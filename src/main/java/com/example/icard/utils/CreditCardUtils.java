@@ -16,7 +16,6 @@ public class CreditCardUtils {
 	private static Random random = new Random(System.currentTimeMillis());
 
 	public static String generateNumberCreditCard() {
-
 		int randomNumberLength = LENGTH_NUMBER - (BIN.length() + 1);
 
 		StringBuilder builder = new StringBuilder(BIN);

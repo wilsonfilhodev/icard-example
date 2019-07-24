@@ -13,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,6 +33,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RunWith(MockitoJUnitRunner.class)
 public class CardControllerTest {
 
+	Logger logger = LoggerFactory.getLogger(CardControllerTest.class);
+	
 	private MockMvc mvc;
 
 	@Mock
@@ -51,6 +55,8 @@ public class CardControllerTest {
 
 	@Before
 	public void setup() {
+		logger.info("SETUP TEST");
+		
 		cardEmissionDTOMock = new CardEmissionDTO("Full Name", new BigDecimal("1000"));
 		transactionAuthorizationDTOMock = Mockito.mock(TransactionAuthorizationDTO.class);
 		JacksonTester.initFields(this, new ObjectMapper());
@@ -60,6 +66,8 @@ public class CardControllerTest {
 
 	@Test
 	public void givenCard_whenCallCreate_thenReturnJsonCard() throws Exception {
+		logger.info("TEST CREATE CARD WITH SUCCESS");
+		
 		String jsonString = jsonCardEmissionDTO.write(cardEmissionDTOMock).getJson();
 
 		given(cardService.save(Mockito.any(CardEmissionDTO.class))).willReturn(cardEmissionDTOMock);
@@ -74,6 +82,8 @@ public class CardControllerTest {
 	
 	@Test
 	public void givenExcpetion_whenCallCreate_thenReturnBadRequest() throws Exception {
+		logger.info("TEST SAVE CARD WITH EXCEPTION OCURRED IN SERVICE");
+		
 		String jsonString = jsonCardEmissionDTO.write(cardEmissionDTOMock).getJson();
 		
 		given(cardService.save(Mockito.any(CardEmissionDTO.class))).willThrow(BusinessException.class);
@@ -87,6 +97,8 @@ public class CardControllerTest {
 	
 	@Test
 	public void givenAuthorizationTransactionDTO_whenCallAuthorizeTransaction_thenReturnJsonSuccess() throws Exception {
+		logger.info("TEST AUTHORIZE TRANSACTION WITH SUCCESS");
+		
 		String jsonString = jsonTransactionAuthorizationDTO.write(transactionAuthorizationDTOMock).getJson();
 		SuccessResponseDTO responseDTO = new SuccessResponseDTO("00", new BigDecimal("1000"));
 

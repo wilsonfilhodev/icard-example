@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,8 @@ import com.example.icard.utils.DateValidtUtils;
 @Service
 public class CardServiceImpl implements CardService {
 	
+	Logger logger = LoggerFactory.getLogger(CardServiceImpl.class);
+	
 	private CardRepository cardRepository;
 	
 	public CardServiceImpl(CardRepository cardRepository) {
@@ -29,6 +33,8 @@ public class CardServiceImpl implements CardService {
 
 	@Transactional
 	public CardEmissionDTO save(CardEmissionDTO cardEmissionDTO) {
+		logger.info("PREPARING CARD FOR SAVE");
+		
 		verifyFieldsRequired(cardEmissionDTO);
 		
 		cardEmissionDTO.setCardNumber(CreditCardUtils.generateNumberCreditCard());
@@ -40,11 +46,14 @@ public class CardServiceImpl implements CardService {
 		
 		cardRepository.save(cardEmissionDTO.parseToCard());
 		
+		logger.info("CARD SAVED");
 		cardEmissionDTO.setPassword(password);
 		return cardEmissionDTO;
 	}
 
 	public SuccessResponseDTO authorizeTransaction(TransactionAuthorizationDTO transactionAuthorizationDTO) {
+		logger.info("INITIATING TRANSACTION AUTHORIZATION");
+		
 		verifyFieldsRequiredAuthorizationTransaction(transactionAuthorizationDTO);
 		
 		Optional<Card> optionalCard = cardRepository.findByCardNumber(transactionAuthorizationDTO.getCardNumber());
@@ -60,10 +69,13 @@ public class CardServiceImpl implements CardService {
 		
 		setNewBalance(transactionAuthorizationDTO, card);
 		
+		logger.info("TRANSACTION AUTHORIZEd");
 		return new SuccessResponseDTO("00", card.getBalance());
 	}
 
 	private void verifyFieldsRequiredAuthorizationTransaction(TransactionAuthorizationDTO transactionAuthorizationDTO) {
+		logger.info("VALIDATING REQUIRED FIELDS TO AUTHORIZE TRANSACTION");
+		
 		if(StringUtils.isEmpty(transactionAuthorizationDTO.getCardNumber())) throw new BusinessException("Field 'cartao' is required", "400");
 		if(StringUtils.isEmpty(transactionAuthorizationDTO.getClient())) throw new BusinessException("Field 'estabelecimento' is required", "400");
 		if(StringUtils.isEmpty(transactionAuthorizationDTO.getCvv())) throw new BusinessException("Field 'CVV' is required", "400");
@@ -100,6 +112,8 @@ public class CardServiceImpl implements CardService {
 	}
 	
 	private void verifyFieldsRequired(CardEmissionDTO cardEmissionDTO) {
+		logger.info("VALIDATING FIELDS REQUIRED FOR CREATE NEW CARD");
+		
 		if(StringUtils.isEmpty(cardEmissionDTO.getName())) throw new BusinessException("Field 'nome' is required", "400");
 		if(StringUtils.isEmpty(cardEmissionDTO.getBalance())) throw new BusinessException("Field 'saldo' is required", "400");
 	}

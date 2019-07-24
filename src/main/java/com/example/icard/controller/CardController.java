@@ -1,5 +1,7 @@
 package com.example.icard.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +19,21 @@ import com.example.icard.service.CardService;
 @RequestMapping("/api/cards")
 public class CardController {
 
+	Logger logger = LoggerFactory.getLogger(CardController.class);
+
 	@Autowired
 	private CardService cardService;
-	
+
 	@PostMapping
 	public ResponseEntity<CardEmissionDTO> create(@RequestBody CardEmissionDTO cardEmissionDTO) {
+		logger.info("CREATING NEW CARD");
 		return ResponseEntity.status(HttpStatus.CREATED).body(cardService.save(cardEmissionDTO));
 	}
-	
+
 	@PostMapping("/authorization")
-	public ResponseEntity<SuccessResponseDTO> authorizeTransaction(@RequestBody TransactionAuthorizationDTO transationAuthorizationDTO) {
+	public ResponseEntity<SuccessResponseDTO> authorizeTransaction(
+			@RequestBody TransactionAuthorizationDTO transationAuthorizationDTO) {
+		logger.info("AUTHORIZING TRANSACTION");
 		return ResponseEntity.status(HttpStatus.OK).body(cardService.authorizeTransaction(transationAuthorizationDTO));
 	}
 }
