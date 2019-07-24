@@ -48,7 +48,7 @@ We adopted as Spring Boot framework that also already follows the MVC model, thu
 
 **POST** http://localhost:8080/api/cards
 ```
-  Example data send in body
+  Example data send in body (JSON)
   
   {
     "nome": "Steven N. Lester",
@@ -76,7 +76,7 @@ We adopted as Spring Boot framework that also already follows the MVC model, thu
 
 **POST** http://localhost:8080/api/cards/authorization
 ```
-  Example data send in body
+  Example data send in body (JSON)
   
   {
     "cartao": "5555558908835049",
@@ -89,12 +89,23 @@ We adopted as Spring Boot framework that also already follows the MVC model, thu
 ```
 
 ```
-  Example return data.
+  Example return data (SUCCESS).
   
  {
     "codigo": "00",
     "saldo": 1300.00
 }
+```
+
+```
+  Example return data (ERROR).
+  
+ {
+    "codigo": "105",
+    "erros": [
+          "Transação não autorizada. Saldo insuficiente."
+        ]
+ }
 ```
 
 **Notes**
