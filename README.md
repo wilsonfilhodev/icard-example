@@ -139,4 +139,4 @@ This project is documented with Swagger 2 API docs. Run the server and browse to
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License.
