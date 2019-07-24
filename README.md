@@ -39,7 +39,7 @@ Here is what this little application demonstrates:
 - Automatic CRUD Functionality Using Standard Spring Mongo Repository
 - Demonstrates MockMVC test framework and Junit 
 - Documentation using Swagger2 annotations
-- Web address API health monitoring `http://localhost:8080/actuator/health`
+- Web address API health monitoring http://localhost:8080/actuator/health
 
 
 ## Quick start
