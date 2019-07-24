@@ -32,7 +32,8 @@ We adopted as Spring Boot framework that also already follows the MVC model, thu
 
 > Verify that you are running at least JDK 1.8+ and Maven 3.3+ by running java -version and mvn -version in a terminal/console window. Older versions produce errors, but newer versions are fine.
 
-> This api uses cloud database (MLab), so it is necessary is connected to the internet to utilize the features of this project.
+> This api uses cloud database (MLab), so it is necessary is connected to the internet to utilize the features of this project. 
+You can point to a local database by changing the connection data in the `application.properties` file.
 
 1. Download or clone project
 
