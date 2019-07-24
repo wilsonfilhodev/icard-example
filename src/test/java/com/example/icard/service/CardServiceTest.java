@@ -51,7 +51,7 @@ public class CardServiceTest {
 		logger.info("TEST SAVE CARD WHITHOUT NAME");
 		
 		thrown.expect(BusinessException.class);
-		thrown.expectMessage("Field 'nome' is required");
+		thrown.expectMessage("Nome é obrigatório");
 		
 		CardEmissionDTO dto = new CardEmissionDTO();
 		dto.setName(null);
@@ -82,7 +82,7 @@ public class CardServiceTest {
 		logger.info("TEST AUTHORIZE TRANSACTION WITHOUT CARD NUMBER");
 		
 		thrown.expect(BusinessException.class);
-		thrown.expectMessage("Field 'cartao' is required");
+		thrown.expectMessage("Número do cartão é obrigatório");
 		
 		transactionAuthorizationDTOMokc.setCardNumber(null);
 		
@@ -94,7 +94,7 @@ public class CardServiceTest {
 		logger.info("TEST AUTHORIZE TRANSACTION WITHOUT CARD EXPIRED");
 		
 		thrown.expect(BusinessException.class);
-		thrown.expectMessage("Transaction not authorized. Card expired.");
+		thrown.expectMessage("Transação não autorizada. Data de validade expirada.");
 		
 		transactionAuthorizationDTOMokc.setExpirantionDate("07/18");
 		
