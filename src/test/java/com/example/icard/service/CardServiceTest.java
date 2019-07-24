@@ -36,7 +36,7 @@ public class CardServiceTest {
 	@Before
 	public void setup() {
 		transactionAuthorizationDTOMokc = new TransactionAuthorizationDTO(
-				"5555551234567890", "12/22", "333", "Empresa XYZ", new BigDecimal("1000"), "1234");
+				"5555550434374908", "07/21", "301", "Empresa XYZ", new BigDecimal("1000"), "2684");
 		cardService = new CardServiceImpl(cardRepository);
     }
 	
@@ -48,18 +48,6 @@ public class CardServiceTest {
 		CardEmissionDTO dto = new CardEmissionDTO();
 		dto.setName(null);
 		dto.setBalance(BigDecimal.ONE);
-		
-		cardService.save(dto);
-	}
-	
-	@Test
-	public void givenCardWithoutBalance_whenSaveCard_thenReturnExcpetion() throws Exception {
-		thrown.expect(BusinessException.class);
-		thrown.expectMessage("Field 'saldo' is required");
-		
-		CardEmissionDTO dto = new CardEmissionDTO();
-		dto.setName("My Full Name");
-		dto.setBalance(null);
 		
 		cardService.save(dto);
 	}
@@ -90,61 +78,15 @@ public class CardServiceTest {
 	}
 	
 	@Test
-	public void givenCardWithoutClient_whenAuthorizeTransaction_thenReturnExcpetion() throws Exception {
+	public void givenCardWithValidateExpired_whenAuthorizeTransaction_thenReturnExcpetion() throws Exception {
 		thrown.expect(BusinessException.class);
-		thrown.expectMessage("Field 'estabelecimento' is required");
+		thrown.expectMessage("Transaction not authorized. Card expired.");
 		
-		transactionAuthorizationDTOMokc.setClient(null);
+		transactionAuthorizationDTOMokc.setExpirantionDate("07/18");
+		
+		Mockito.when(cardRepository.findByCardNumber(transactionAuthorizationDTOMokc.getCardNumber())).thenReturn(Optional.of(new Card()));
 		
 		cardService.authorizeTransaction(transactionAuthorizationDTOMokc);
 	}
 	
-	@Test
-	public void givenCardWithoutCvv_whenAuthorizeTransaction_thenReturnExcpetion() throws Exception {
-		thrown.expect(BusinessException.class);
-		thrown.expectMessage("Field 'CVV' is required");
-		
-		transactionAuthorizationDTOMokc.setCvv(null);
-		
-		cardService.authorizeTransaction(transactionAuthorizationDTOMokc);
-	}
-	
-	@Test
-	public void givenCardWithoutExpirantionDate_whenAuthorizeTransaction_thenReturnExcpetion() throws Exception {
-		thrown.expect(BusinessException.class);
-		thrown.expectMessage("Field 'validade' is required");
-		
-		transactionAuthorizationDTOMokc.setExpirantionDate(null);
-		
-		cardService.authorizeTransaction(transactionAuthorizationDTOMokc);
-	}
-	
-	@Test
-	public void givenCardWithoutPassword_whenAuthorizeTransaction_thenReturnExcpetion() throws Exception {
-		thrown.expect(BusinessException.class);
-		thrown.expectMessage("Field 'senha' is required");
-		
-		transactionAuthorizationDTOMokc.setPassword(null);
-		
-		cardService.authorizeTransaction(transactionAuthorizationDTOMokc);
-	}
-	
-	@Test
-	public void givenCardWithoutBalance_whenAuthorizeTransaction_thenReturnExcpetion() throws Exception {
-		thrown.expect(BusinessException.class);
-		thrown.expectMessage("Field 'valor' is required");
-		
-		transactionAuthorizationDTOMokc.setSaleValue(null);
-		
-		cardService.authorizeTransaction(transactionAuthorizationDTOMokc);
-	}
-	
-	@Test
-	public void givenCardNotExist_whenAuthorizeTransaction_thenReturnExcpetion() throws Exception {
-		thrown.expect(BusinessException.class);
-		thrown.expectMessage("Transaction not authorized. Card invalid.");
-		
-		Mockito.when(cardRepository.findByCardNumber(transactionAuthorizationDTOMokc.getCardNumber())).thenReturn(Optional.empty());
-		cardService.authorizeTransaction(transactionAuthorizationDTOMokc);
-	}
 }

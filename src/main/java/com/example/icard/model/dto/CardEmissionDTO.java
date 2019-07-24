@@ -38,6 +38,11 @@ public class CardEmissionDTO {
 		this.balance = card.getBalance();
 	}
 
+	public CardEmissionDTO(String name, BigDecimal balance) {
+		this.name = name;
+		this.balance = balance;
+	}
+
 	public Card parseToCard() {
 		Card card = new Card();
 		card.setName(this.name);

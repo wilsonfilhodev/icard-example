@@ -30,13 +30,16 @@ public class CardServiceImpl implements CardService {
 	@Transactional
 	public CardEmissionDTO save(CardEmissionDTO cardEmissionDTO) {
 		verifyFieldsRequired(cardEmissionDTO);
+		
 		cardEmissionDTO.setCardNumber(CreditCardUtils.generateNumberCreditCard());
 		cardEmissionDTO.setExpirantionDate(DateValidtUtils.generate(LocalDate.now()));
 		cardEmissionDTO.setCvv(CreditCardUtils.generateCvv(cardEmissionDTO.getCardNumber(), cardEmissionDTO.getExpirantionDate()));
 		String password = CreditCardUtils.generatePassword();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		cardEmissionDTO.setPassword(passwordEncoder.encode(password));
+		
 		cardRepository.save(cardEmissionDTO.parseToCard());
+		
 		cardEmissionDTO.setPassword(password);
 		return cardEmissionDTO;
 	}
