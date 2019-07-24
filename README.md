@@ -1,7 +1,14 @@
+<p align="center">
+  <a href="https://spring.io/">
+    <img src="https://spring.io/img/homepage/icon-spring-boot.svg" alt="Logo" width=72 height=72>
+  </a>
 
-<h3>API Rest iCARD</h3>
+  <h3 align="center">API Rest iCARD - Spring Boot + MongoDB</h3>
 
-<p>API Restfull example using Spring Boot + MongoDB. In this project it is possible to create cards and authorize purchases.</p>
+  <p align="center">
+    This example app shows how to build a basic api rest, using Spring Boot, which create credit cards and authorize purchases.
+  </p>
+</p>
 
 ## Contents
 
