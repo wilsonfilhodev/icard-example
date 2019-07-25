@@ -55,7 +55,7 @@ Here is what this little application demonstrates:
 
 2. Go to project folder and execute command.
  ```bash
- mvn clean spring-boot:run
+ $ mvn clean spring-boot:run
  ```
  
 Once the application runs you should see something like this
@@ -69,14 +69,12 @@ Once the application runs you should see something like this
 
 **Warning**
 
-> To run this application in a docker container you must have JDK 8+, Maven, Docker and Docker-compose.
+> To run this application in a docker container you must have Docker and Docker-compose.
 
 1. Download or clone project
 
 2. Go to project folder and execute command.
- ```bash
- $ mvn package
- ```
+
  ```bash
  $ docker build -t icard .
  ```
