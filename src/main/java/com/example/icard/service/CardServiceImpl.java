@@ -18,7 +18,7 @@ import com.example.icard.model.dto.TransactionAuthorizationDTO;
 import com.example.icard.repository.CardRepository;
 import com.example.icard.service.execption.BusinessException;
 import com.example.icard.utils.CreditCardUtils;
-import com.example.icard.utils.DateValidtUtils;
+import com.example.icard.utils.ExpirantionDatetUtils;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -38,7 +38,7 @@ public class CardServiceImpl implements CardService {
 		verifyFieldsRequired(cardEmissionDTO);
 		
 		cardEmissionDTO.setCardNumber(CreditCardUtils.generateNumberCreditCard());
-		cardEmissionDTO.setExpirantionDate(DateValidtUtils.generate(LocalDate.now()));
+		cardEmissionDTO.setExpirantionDate(ExpirantionDatetUtils.generate(LocalDate.now()));
 		cardEmissionDTO.setCvv(CreditCardUtils.generateCvv(cardEmissionDTO.getCardNumber(), cardEmissionDTO.getExpirantionDate()));
 		String password = CreditCardUtils.generatePassword();
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -80,6 +80,7 @@ public class CardServiceImpl implements CardService {
 		if(StringUtils.isEmpty(transactionAuthorizationDTO.getClient())) throw new BusinessException("Estabelecimento é obrigatório", "400");
 		if(StringUtils.isEmpty(transactionAuthorizationDTO.getCvv())) throw new BusinessException("Código CVV é obrigatório", "400");
 		if(StringUtils.isEmpty(transactionAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Data de Validade é obrigatória", "400");
+		if(!ExpirantionDatetUtils.isValidDate(transactionAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Data de validade inválida", "400");
 		if(StringUtils.isEmpty(transactionAuthorizationDTO.getPassword())) throw new BusinessException("Senha é obrigatório", "400");
 		if(transactionAuthorizationDTO.getSaleValue() == null) throw new BusinessException("Valor da compra é obrigatório", "400");
 	}
@@ -91,7 +92,7 @@ public class CardServiceImpl implements CardService {
 	}
 
 	private void validateIfCardNotExpirate(TransactionAuthorizationDTO transactionAuthorizationDTO) {
-		if(DateValidtUtils.cardExpired(transactionAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Transação não autorizada. Data de validade expirada.", "102");
+		if(ExpirantionDatetUtils.cardExpired(transactionAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Transação não autorizada. Data de validade expirada.", "102");
 	}
 	
 	private void validateIfCvvIsValid(TransactionAuthorizationDTO transactionAuthorizationDTO) {

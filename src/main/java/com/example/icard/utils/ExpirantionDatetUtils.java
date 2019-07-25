@@ -6,12 +6,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.example.icard.service.execption.BusinessException;
 
-public class DateValidtUtils {
+public class ExpirantionDatetUtils {
 
-	private DateValidtUtils() {
+	private ExpirantionDatetUtils() {
 		throw new IllegalStateException("Utility class");
 	}
 
@@ -34,6 +36,13 @@ public class DateValidtUtils {
 		} catch (ParseException e) {
 			throw new BusinessException("Error. Try again.", "500");
 		}
+	}
+	
+	public static boolean isValidDate(String date) {
+		String regex = "^[0-1][0-9]/[0-9]{2}$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(date);
+		return matcher.matches();
 	}
 
 }
