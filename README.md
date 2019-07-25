@@ -14,6 +14,7 @@
 
 - [Overview](#overview)
 - [Quick start](#quick-start)
+- [Docker](#docker)
 - [What's included](#whats-included)
 - [Documentation](#documentation)
 - [Authors](#authors)
@@ -23,7 +24,7 @@
 ## Overview
 
 
-The API is just a credit card creation and transaction authorization REST service. It uses an cloud database (MLAB) to store the data.
+The API is just a credit card creation and transaction authorization REST service. It uses an MongoDB database to store the data. You can run this application in a Docker container.
 
 This project was developed following the MVC model. By adopting this architectural model the maintenance and evolution of the application becomes easier. When applying this model correctly the developer intuitively brings to his application some design patterns.
 
@@ -48,8 +49,7 @@ Here is what this little application demonstrates:
 
 > Verify that you are running at least JDK 1.8+ and Maven 3.3+ by running java -version and mvn -version in a terminal/console window. Older versions produce errors, but newer versions are fine.
 
-> This api uses cloud database (MLab), so it is necessary is connected to the internet to utilize the features of this project. 
-You can point to a local database by changing the connection data in the `application.properties` file.
+> This api uses MongoDB database, so it is necessary that you have this database available. You can changing the connection data in file `application.properties`.
 
 1. Download or clone project
 
@@ -64,6 +64,25 @@ Once the application runs you should see something like this
 2019-07-25 01:33:07.263  INFO 1492 --- [  restartedMain] com.example.icard.IcardApplication       : Started IcardApplication in 10.716 seconds (JVM running for11.818)
 
 ```
+
+## Docker
+
+**Warning**
+
+> To run this application in a docker container you must have JDK 8+, Maven, Docker and Docker-compose.
+
+1. Download or clone project
+
+2. Go to project folder and execute command.
+ ```bash
+ $ mvn package
+ ```
+ ```bash
+ $ docker build -t icard .
+ ```
+ ```bash
+ $ docker-compose up
+ ```
 
 ## What's included
 
