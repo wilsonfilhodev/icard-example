@@ -58,14 +58,21 @@ You can point to a local database by changing the connection data in the `applic
  mvn clean spring-boot:run
  ```
  
+Once the application runs you should see something like this
+```bash
+2019-07-25 01:33:07.261  INFO 1492 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-07-25 01:33:07.263  INFO 1492 --- [  restartedMain] com.example.icard.IcardApplication       : Started IcardApplication in 10.716 seconds (JVM running for11.818)
+
+```
 
 ## What's included
 
 * Create new card
 
-**POST** http://localhost:8080/api/cards
 ```
-  Example data send in body (JSON)
+  POST /api/cards
+  Accept: application/json
+  Content-Type: application/json
   
   {
     "nome": "Steven N. Lester",
@@ -76,12 +83,14 @@ You can point to a local database by changing the connection data in the `applic
 ```
   Example return data.
   
+  RESPONSE: HTTP 201 (Created)
+  
  {
-    "nome": "1234",
-    "numero": "5555551234567890",
-    "cvv": "071",
+    "cvv": "016",
+    "nome": "Steven N. Lester",
+    "numero": "5555556716962161",
     "validade": "07/21",
-    "senha": "1234",
+    "senha": "7807",
     "saldo": 2300.00
 }
 ```
@@ -91,22 +100,25 @@ You can point to a local database by changing the connection data in the `applic
 
 * Sale Authorization
 
-**POST** http://localhost:8080/api/cards/authorization
 ```
-  Example data send in body (JSON)
+  POST /api/cards/authorization
+  Accept: application/json
+  Content-Type: application/json
   
   {
-    "cartao": "5555558908835049",
+    "cartao": "5555556716962161",
     "validade": "07/21",
-    "cvv": "242",
+    "cvv": "016",
     "estabelecimento": "Elsie Muller LTDA",
     "valor": 149.19,
-    "senha": "6442"
+    "senha": "7807"
   }
 ```
 
 ```
   Example return data (SUCCESS).
+  
+  RESPONSE: HTTP 200 (OK)
   
  {
     "codigo": "00",
@@ -116,6 +128,8 @@ You can point to a local database by changing the connection data in the `applic
 
 ```
   Example return data (ERROR).
+  
+  RESPONSE: HTTP 400 (Bad Request)
   
  {
     "codigo": "105",
