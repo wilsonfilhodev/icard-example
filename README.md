@@ -67,7 +67,7 @@ Once the application runs you should see something like this
 
 ## Docker
 
-*Warning**
+**Warning**
 
 > To run this application in a docker container you must have JDK 8+, Maven, Docker and Docker-compose.
 
