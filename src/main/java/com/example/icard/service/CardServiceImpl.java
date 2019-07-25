@@ -81,7 +81,7 @@ public class CardServiceImpl implements CardService {
 		if(StringUtils.isEmpty(transactionAuthorizationDTO.getCvv())) throw new BusinessException("Código CVV é obrigatório", "400");
 		if(StringUtils.isEmpty(transactionAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Data de Validade é obrigatória", "400");
 		if(!ExpirantionDatetUtils.isValidDate(transactionAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Data de validade inválida", "400");
-		if(StringUtils.isEmpty(transactionAuthorizationDTO.getPassword())) throw new BusinessException("Senha é obrigatório", "400");
+		if(StringUtils.isEmpty(transactionAuthorizationDTO.getPassword())) throw new BusinessException("Senha é obrigatória", "400");
 		if(transactionAuthorizationDTO.getSaleValue() == null) throw new BusinessException("Valor da venda é obrigatória", "400");
 	}
 
