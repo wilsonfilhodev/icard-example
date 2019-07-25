@@ -62,7 +62,7 @@ public class CardServiceImpl implements CardService {
 		
 		Card card = optionalCard.get();
 		
-		validateIfCardNotExpirate(transactionAuthorizationDTO);
+		validateCardExpirationDate(transactionAuthorizationDTO, card);
 		validateIfCvvIsValid(transactionAuthorizationDTO);
 		validatePassword(transactionAuthorizationDTO, card);
 		validateBalance(transactionAuthorizationDTO, card);
@@ -91,8 +91,11 @@ public class CardServiceImpl implements CardService {
 		cardRepository.save(card);
 	}
 
-	private void validateIfCardNotExpirate(TransactionAuthorizationDTO transactionAuthorizationDTO) {
-		if(ExpirantionDatetUtils.cardExpired(transactionAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Transação não autorizada. Data de validade expirada.", "102");
+	private void validateCardExpirationDate(TransactionAuthorizationDTO transactionAuthorizationDTO, Card card) {
+		if(ExpirantionDatetUtils.cardExpired(transactionAuthorizationDTO.getExpirantionDate())) 
+				throw new BusinessException("Transação não autorizada. Data de validade expirada.", "102");
+		if(!transactionAuthorizationDTO.getExpirantionDate().equals(card.getExpirantionDate())) 
+			throw new BusinessException("Transação não autorizada. Data de validade incorreta.", "106");
 	}
 	
 	private void validateIfCvvIsValid(TransactionAuthorizationDTO transactionAuthorizationDTO) {
