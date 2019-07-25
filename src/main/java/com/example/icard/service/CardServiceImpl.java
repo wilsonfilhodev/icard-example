@@ -69,7 +69,7 @@ public class CardServiceImpl implements CardService {
 		
 		setNewBalance(transactionAuthorizationDTO, card);
 		
-		logger.info("TRANSACTION AUTHORIZEd");
+		logger.info("TRANSACTION AUTHORIZED");
 		return new SuccessResponseDTO("00", card.getBalance());
 	}
 
@@ -82,7 +82,7 @@ public class CardServiceImpl implements CardService {
 		if(StringUtils.isEmpty(transactionAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Data de Validade é obrigatória", "400");
 		if(!ExpirantionDatetUtils.isValidDate(transactionAuthorizationDTO.getExpirantionDate())) throw new BusinessException("Data de validade inválida", "400");
 		if(StringUtils.isEmpty(transactionAuthorizationDTO.getPassword())) throw new BusinessException("Senha é obrigatório", "400");
-		if(transactionAuthorizationDTO.getSaleValue() == null) throw new BusinessException("Valor da compra é obrigatório", "400");
+		if(transactionAuthorizationDTO.getSaleValue() == null) throw new BusinessException("Valor da venda é obrigatória", "400");
 	}
 
 	private void setNewBalance(TransactionAuthorizationDTO transactionAuthorizationDTO, Card card) {
